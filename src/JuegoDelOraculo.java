@@ -18,10 +18,36 @@ public class JuegoDelOraculo {
 
 
     public void iniciar() {
-        generarNumeros(10);
-        System.out.println("Numeros generados. Ordenando...");
+        System.out.println("Selecciona el algoritmo de ordenamiento:");
+        System.out.println("1. MergeSort");
+        System.out.println("2. QuickSort");
+        System.out.println("3. Ambos (comparar tiempos)");
+        System.out.print("Opción: ");
+        int opcion = scanner.nextInt();
+        generarNumeros(1000);
+        if (opcion == 3) {
+            List<NumeroMagico> copiaMerge = new ArrayList<>();
+            List<NumeroMagico> copiaQuick = new ArrayList<>();
+            for (NumeroMagico nm : numeros) copiaMerge.add(new NumeroMagico(nm.getValor()));
+            for (NumeroMagico nm : numeros) copiaQuick.add(new NumeroMagico(nm.getValor()));
 
-        long tiempoOrdenamiento = medirTiempo(() -> ordenarNumeros());
+            System.out.println("Ejecutando MergeSort...");
+            long tiempoMerge = medirTiempo(() -> mergeSort(copiaMerge));
+            System.out.println("MergeSort finalizado en " + tiempoMerge + " ms.");
+
+            System.out.println("Ejecutando QuickSort...");
+            long tiempoQuick = medirTiempo(() -> quickSort(copiaQuick, 0, copiaQuick.size() - 1));
+            System.out.println("QuickSort finalizado en " + tiempoQuick + " ms.");
+
+            System.out.println("Usando lista ordenada con QuickSort para el juego.");
+            numeros = copiaQuick;
+        } else {
+            System.out.println("Numeros generados. Ordenando usando " + (opcion == 1 ? "MergeSort" : "QuickSort") + "...");
+            long tiempoOrdenamiento = medirTiempo(() -> ordenarNumeros(opcion));
+            System.out.println("Ordenamiento completado en " + tiempoOrdenamiento + " ms.");
+        }
+
+        long tiempoOrdenamiento = medirTiempo(() -> ordenarNumeros(opcion));
         System.out.println("Ordenamiento completado en " + tiempoOrdenamiento + " ms.\n");
 
         final boolean[] encontrado = {false};
@@ -59,7 +85,7 @@ public class JuegoDelOraculo {
     }
 
 
-    private void ordenarNumeros() {
+    private void ordenarNumeros(int opcion) {
         mergeSort(numeros);
     }
 
@@ -108,6 +134,26 @@ public class JuegoDelOraculo {
         mergeSort(izquierda);
         mergeSort(derecha);
         mezclar(lista, izquierda, derecha);
+    }
+
+    private void quickSort(List<NumeroMagico> lista, int inicio, int fin) {
+        if (inicio >= fin) return;
+        int pivoteIndex = particionar(lista, inicio, fin);
+        quickSort(lista, inicio, pivoteIndex - 1);
+        quickSort(lista, pivoteIndex + 1, fin);
+    }
+
+    private int particionar(List<NumeroMagico> lista, int inicio, int fin) {
+        NumeroMagico pivote = lista.get(fin);
+        int i = inicio - 1;
+        for (int j = inicio; j < fin; j++) {
+            if (lista.get(j).compareTo(pivote) <= 0) {
+                i++;
+                Collections.swap(lista, i, j);
+            }
+        }
+        Collections.swap(lista, i + 1, fin);
+        return i + 1;
     }
 
     private void mezclar(List<NumeroMagico> lista, List<NumeroMagico> izquierda, List<NumeroMagico> derecha) {
