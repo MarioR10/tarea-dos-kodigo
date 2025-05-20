@@ -50,15 +50,33 @@ public class JuegoDelOraculo {
         long tiempoOrdenamiento = medirTiempo(() -> ordenarNumeros(opcion));
         System.out.println("Ordenamiento completado en " + tiempoOrdenamiento + " ms.\n");
 
+
+        // --- INICIO DE LA LÓGICA (BÚSQUEDA) ---
         final boolean[] encontrado = {false};
+
         while (!encontrado[0]) {
             System.out.print("Ingresa un número mágico (entre 1000 y 9999): ");
             int intento = scanner.nextInt();
             long tiempoBusqueda = medirTiempo(() -> {
-                encontrado[0] = buscarNumero(intento);
+                NumeroMagico numeroEncontrado =  BuscadorMagico.buscarNumeroBinario(numeros, intento);
+
+                if(numeroEncontrado !=null){
+
+                    if (numeroEncontrado.tieneMensaje()){
+
+                        System.out.println("¡Correcto! El Oráculo dice: " + numeroEncontrado.getMensaje());
+                        encontrado[0] = true; // Se encontró el mensaje, salir del bucle
+                    }else {
+                        System.out.println("Ese número no contiene el mensaje del oráculo.");
+                    }
+                }else {
+                    System.out.println("Número no encontrado en el cáliz del oráculo.");
+                }
             });
             System.out.println("Búsqueda completada en " + tiempoBusqueda + " ms.");
         }
+
+        // --- FIN DE LA LÓGICA DE BUSQUEDA ---
     }
 
     private void generarNumeros(int cantidad) {
@@ -89,32 +107,6 @@ public class JuegoDelOraculo {
         mergeSort(numeros);
     }
 
-    private boolean buscarNumero(int valor) {
-        int izquierda = 0;
-        int derecha = numeros.size() - 1;
-
-        while (izquierda <= derecha) {
-            int medio = (izquierda + derecha) / 2;
-            int actual = numeros.get(medio).getValor();
-
-            if (actual == valor) {
-                if (numeros.get(medio).tieneMensaje()) {
-                    System.out.println("¡Correcto! El Oráculo dice: " + numeros.get(medio).getMensaje());
-                    return true;
-                } else {
-                    System.out.println("Ese número no contiene el mensaje del oráculo.");
-                    return false;
-                }
-            } else if (actual < valor) {
-                izquierda = medio + 1;
-            } else {
-                derecha = medio - 1;
-            }
-        }
-
-        System.out.println("Número no encontrado en el cáliz del oráculo.");
-        return false;
-    }
 
     private long medirTiempo(Runnable tarea) {
         long inicio = System.nanoTime();
