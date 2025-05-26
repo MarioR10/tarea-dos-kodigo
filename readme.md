@@ -17,7 +17,7 @@ Java (JDK 8 o superior) ☕
 Un IDE (como IntelliJ o Eclipse) o la terminal para compilar.
 
 Descarga el proyecto:
-git clone <URL-del-repositorio>
+git clone https://github.com/MarioR10/tarea-dos-kodigo.git
 
 🚀 Cómo Jugar
 
