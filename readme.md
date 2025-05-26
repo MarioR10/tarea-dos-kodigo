@@ -18,3 +18,29 @@ Un IDE (como IntelliJ o Eclipse) o la terminal para compilar.
 
 Descarga el proyecto:
 git clone <URL-del-repositorio>
+
+🚀 Cómo Jugar
+
+
+Ejecuta el programa:
+
+java Main
+
+El programa:
+
+Mide y muestra los tiempos promedio de MergeSort, QuickSort y búsqueda binaria.
+
+Te pide ingresar un número (1000-9999) para buscar el mensaje secreto.
+
+Sigue intentando hasta que lo encuentres. 🎉
+
+
+📂 Archivos del Proyecto
+
+Main.java: Inicia el juego.
+
+JuegoDelOraculo.java: Lógica principal (generación, ordenamiento, búsqueda).
+
+NumeroMagico.java: Clase para números mágicos.
+
+BuscadorMagico.java: Implementa la búsqueda binaria.
